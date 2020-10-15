@@ -1,0 +1,115 @@
+﻿<table border="1" style="font-family:Console;font-size:medium;text-align:center; border-color:lightblue" align="center" cellspacing="150">
+    <tr bgcolor="lightgrey">
+        <th>Name</th>
+        <th>Type of Manifestation</th>
+        <th>Date set for the manifestation</th>
+        <th>Number Of Seats</th>
+        <th>Price</th>
+        <th>Request Status</th>
+        <th>Location</th>
+        <th>Organisator</th>
+        <th>Image</th>
+        <th>Status</th>
+        <th>&nbsp;</th>
+
+
+
+    </tr>
+
+    @foreach (Projekat.Models.Manifestacija v in ViewBag.SveManifestacije)
+    {
+
+        if (v.Odobreno &&
+            ViewBag.Korisnik.Uloga.Equals(Projekat.Models.eUloga.PRODAVAC)
+            && ViewBag.Korisnik.Username.Equals(v.Organizator.Username)
+            )
+        {
+
+<tr>
+    <td>@v.Naziv</td>
+    <td>@v.TipManifestacije</td>
+    <td>@v.Date</td>
+    <td>@v.Br_mesta</td>
+    <td>@v.Cena_REGULAR</td>
+
+    @if (v.Odobreno)
+    {
+        <td style="color:lawngreen"> Request accepted</td>
+    }
+
+    <td>
+        @v.MestoOdrzavanja.Ulica
+        @v.MestoOdrzavanja.Broj
+        @v.MestoOdrzavanja.Grad
+        @v.MestoOdrzavanja.Postanski_Broj
+
+    </td>
+
+    <td>@v.Organizator.Username</td>
+    <td><img src="~/Files/@v.Image_path" style="width:200px; height:200px" /></td>
+
+    @if (v.Status)
+    {
+        <td style="color:lawngreen">ACTIVE</td>
+    }
+    else
+    {
+        <td style="color:red">PASSIVE</td>
+    }
+
+</tr>
+        }
+        else if (ViewBag.Korisnik.Uloga.Equals(Projekat.Models.eUloga.ADMIN))
+        {
+<tr>
+    <td>@v.Naziv</td>
+    <td>@v.TipManifestacije</td>
+    <td>@v.Date</td>
+    <td>@v.Br_mesta</td>
+    <td>@v.Cena_REGULAR</td>
+    @if (v.Odobreno)
+    {
+        <td style="color:lawngreen">Request accepted</td>
+    }
+    else
+    {
+        <td style="color:red">Pendning Request</td>
+    }
+
+
+    <td>
+        @v.MestoOdrzavanja.Ulica
+        @v.MestoOdrzavanja.Broj
+        @v.MestoOdrzavanja.Grad
+        @v.MestoOdrzavanja.Postanski_Broj
+
+    </td>
+    <td>@v.Organizator.Username</td>
+    <td><img src="~/Files/@v.Image_path" style="width:200px; height:200px" /></td>
+    @if (v.Status)
+    {
+        <td style="color:lawngreen">ACTIVE</td>
+    }
+    else
+    {
+        <td style="color:red">PASSIVE</td>
+    }
+
+    <td>
+      
+        <form method="get" action="~/Manifestacija/Delete">
+            <input type="hidden" name="Naziv" value="@v.Naziv">
+            <input type="submit" value="Delete">
+            </form>
+         </td>
+
+</tr>
+        }
+
+    }
+</table>
+
+
+<form method="get" action="~/Home/Index">
+    <input type="submit" value="Back">
+</form>

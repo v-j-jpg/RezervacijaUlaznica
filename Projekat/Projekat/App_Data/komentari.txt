@@ -1,0 +1,18 @@
+0|Zdravko Colic|pera|Zdravko najveci mangup ovog vremena|5|DENIED
+1|Zorica Brunclik|pera|Zorka nije smorka|2|ACCEPTED
+2|Jovana Vujanić|joka|Divno|4|DENIED
+3|Zdravko Colic|joka|Zdravko odusevljava svaki put|4|ACCEPTED
+4|Zdravko Colic|joka|Zdravko je za stare i za mlade|2|ACCEPTED
+5|Jovana Vujanić|pera|Enter comment here... |5|ACCEPTED
+6|Zdravko Colic|pera|Grozno|2|ACCEPTED
+7|Jovana Vujanić|pera|Top|5|ACCEPTED
+8|Jovana Vujanić|pera|Top|5|DENIED
+9|Zorica Brunclik|pera|Odlican provod|5|ACCEPTED
+10|Zorica Brunclik|pera|Grozna boja kose,nista ne valja..Stajling nula dok ponasanje -1|1|ACCEPTED
+11|Labudovo jezero|tata|Divno iskustvo|5|ACCEPTED
+12|Labudovo jezero|tata|Klasika je uvek najbolja|4|DENIED
+13|Labudovo jezero|tata|Lepo|5|ACCEPTED
+14|Labudovo jezero|tata|Sup|5|DENIED
+15|Labudovo jezero|tata|Lepota|2|ACCEPTED
+16|Labudovo jezero|tata|Uzasno|2|ACCEPTED
+17|Zorica Brunclik|pera|Genije za narodnu muziku|4|ACCEPTED

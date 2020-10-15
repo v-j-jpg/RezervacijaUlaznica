@@ -1,0 +1,158 @@
+﻿<div>
+    <p>Detail of the  manifestation:</p>
+    <table border="1" align="center" style="font-size:larger">
+
+        <tr>
+            <td>Name</td>
+            <td>@ViewBag.Manifestacija.Naziv</td>
+        </tr>
+        <tr>
+
+            <td>Type of Manifestation</td>
+            <td>@ViewBag.Manifestacija.TipManifestacije</td>
+        </tr>
+        <tr> <td><h4>Date</h4></td> <td>@ViewBag.Manifestacija.Date</td></tr>
+
+
+        <tr> <td><b>Number Of Seats Left:</b></td><td style="color:red">@ViewBag.Manifestacija.Br_mesta</td></tr>
+
+        <tr>  <td>Price</td> <td>@ViewBag.Manifestacija.Cena_REGULAR</td></tr>
+
+        <tr>
+            <td>Status</td>
+
+            @if (ViewBag.Manifestacija.Status)
+            {
+                <td style="color:green">Manifestation should occur at set date</td>
+
+            }
+            else
+            {
+                <td style="color:red">The manifestation has passed...</td>
+            }
+        </tr>
+
+        <tr>
+            <td>Location</td>
+            <td>
+                @ViewBag.Manifestacija.MestoOdrzavanja.Ulica
+                @ViewBag.Manifestacija.MestoOdrzavanja.Broj
+                @ViewBag.Manifestacija.MestoOdrzavanja.Grad
+                @ViewBag.Manifestacija.MestoOdrzavanja.Postanski_Broj
+
+            </td>
+        </tr>
+        <tr>
+            <td>Image</td>
+            <td>
+
+                <img src="~/Files/@ViewBag.Manifestacija.Image_path" style="width:150px; height:150px; align-content:center" />
+            </td>
+
+        </tr>
+
+
+
+
+    </table>
+    @if (ViewBag.Manifestacija.Status.Equals(true) && ViewBag.Korisnik!=null)//Ukoliko je aktivna manif. korisnik moze da rez
+    {
+        if (!ViewBag.Korisnik.Uloga.Equals(Projekat.Models.eUloga.PRODAVAC) || !ViewBag.Korisnik.Uloga.Equals(Projekat.Models.eUloga.ADMIN))
+        {
+
+
+        <div class="jumbotron">
+            <form method="get" action="~/Rezervacija/Reserve">
+                <input type="hidden" value="@ViewBag.Manifestacija.Naziv" name="Naziv">
+
+                <input list="tipKarte" name="tipKarte" required />
+                <datalist id="tipKarte" style="align-content:center">
+                    <option value="REGULAR"></option>
+                    <option value="FAN_PIT"></option>
+                    <option value="VIP"></option>
+                </datalist>
+
+                <input type="number" name="br_karata" id="br_karata" min="1" max="@ViewBag.Manifestacija.Br_mesta" style="align-content:center" required />
+
+                <input type="submit" value="Reserve">
+            </form>
+       
+
+        </div>
+        }
+    }
+    else  //ukoliko nije aktivna
+    {
+        <h3 style="color:midnightblue;font-family:Consolas">Comments:</h3>
+        <div class="jumbotron">
+
+            @foreach (Projekat.Models.Komentar item in ViewBag.Komentari)
+            {
+                if (item.Manifestacija.Naziv.Equals(ViewBag.Manifestacija.Naziv) && item.Status.Equals(Projekat.Models.eStanjeKomentara.ACCEPTED))
+                {
+                    <label for="text_komentara">@item.Korisnik.Username  :</label>
+                    <br />
+                    <textarea id="text_komentara" name="text_komentara" style="text-align:center" rows="4" cols="50" readonly> @item.TextComment</textarea>
+                    <label for="ocena">Rating:</label>
+
+                    for (int i = 0; i < @item.Ocena; i++)
+                    {
+                        <img src="~/1200px-Golden_star.svg.png" name="ocena" height="20" width="20" />
+                    }
+
+                    if (ViewBag.Korisnik.Uloga.Equals(Projekat.Models.eUloga.ADMIN))
+                    {
+                        <form method="get" action="~/Komentar/DeleteComment">
+                            <input type="hidden" name="ID" value="@item.ID">
+                            <input type="hidden" name="Naziv" value="@item.Manifestacija.Naziv">
+                            <input style="color:darkred" type="submit" value="Delete Comment">
+                        </form>
+                    }
+
+
+                    <br />
+                    //  <input type="number" name="ocena" id="ocena" value="@item.Ocena" maxlength="1" style="border: hidden; tab-size:2;resize:both; align-content: center" readonly /><br />
+                }
+                else if (ViewBag.Korisnik != null && item.Manifestacija.Naziv.Equals(ViewBag.Manifestacija.Naziv))
+                {
+                    if (ViewBag.Korisnik.Uloga.Equals(Projekat.Models.eUloga.ADMIN))
+                    {
+                        if (item.Status.Equals(Projekat.Models.eStanjeKomentara.DENIED)) 
+                        {
+
+                            <label for="text_komentara" style="color:red">@item.Status:</label> <label for="text_komentara"> @item.Korisnik.Username  :</label> <br />
+                            <textarea id="text_komentara" name="text_komentara" rows="4" cols="50" style="text-align:center" readonly> @item.TextComment</textarea>
+                            <label for="ocena"> Rating:</label>
+                            for (int i = 0; i < item.Ocena; i++)
+                            {
+                                <img src="~/1200px-Golden_star.svg.png" name="ocena" height="20" width="20" />
+                            }
+
+                            if (ViewBag.Korisnik.Uloga.Equals(Projekat.Models.eUloga.ADMIN))
+                            {
+                                <form method="get" action="~/Komentar/DeleteComment">
+                                    <input type="hidden" name="ID" value="@item.ID">
+                                    <input type="hidden" name="Naziv" value="@item.Manifestacija.Naziv">
+                                    <input style="color:darkred" type="submit" value="Delete Comment">
+                                </form>
+                            }
+
+                          //  <input type="number" name="ocena" id="ocena" maxlength="1" value="@item.Ocena" style=" tab-size:2;resize:both; border:hidden;align-content:center" readonly />
+                            <br />
+                        }
+                    }
+
+
+
+                }
+
+            }
+
+        </div>
+    }
+
+
+
+    <form method="get" action="~/Home/Index">
+        <input type="submit" value="Back">
+    </form>

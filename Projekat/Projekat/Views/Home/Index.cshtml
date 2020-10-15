@@ -1,0 +1,504 @@
+﻿
+@{ ViewBag.Title = "Home Page"; }
+
+<div style="color:red">
+    @ViewBag.Message
+</div>
+
+
+
+@if (ViewBag.korisnici == null)
+{
+    <h1>Hello <a href="~/Autentifikacija/Index">Login</a></h1>
+    <br />
+}
+
+@if (ViewBag.korisnici != null)
+{
+    <h1>Hello @ViewBag.korisnici.Username</h1>
+
+
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li>
+                <form method="get" action="~/Autentifikacija/GetUsersProfile">
+                    <input type="hidden" name="username" value="@ViewBag.korisnici.Username">
+                    <input type="submit" value="UsersProfile">
+                </form>
+            </li>
+            <li>
+                <form method="get" action="~/Rezervacija/GetAllTickets">
+                    <input type="submit" value="Tickets">
+                </form>
+            </li>
+
+
+        </ul>
+    </div>
+
+
+
+
+
+
+
+    if (ViewBag.korisnici.Uloga.Equals(Projekat.Models.eUloga.PRODAVAC))
+    {
+        <div class="jumbotron" style="font:bold;font-style:normal;color:white;background-color:pink">
+            <label><em><strong>SALESMAN panel:</strong></em></label>
+            <br />
+            <a href="~/Manifestacija/AddManifestation" style="color:whitesmoke;font-family:Consolas"> Add New Manifestation </a>
+            <a href="~/Manifestacija/GetManifestation" style="color:deeppink;font-family:Consolas">List of All Tickets </a>
+            <a href="~/Manifestacija/GetAllManifestation" style="color:gold;font-family:Consolas">All Manifestations</a>
+            <a href="~/Komentar/RequestComments" style="color:chartreuse;font-family:Consolas">Requests</a>
+
+        </div>
+    }
+
+    if (ViewBag.korisnici.Uloga.Equals(Projekat.Models.eUloga.ADMIN))
+    {
+        <div class="jumbotron" style="font:bold;font-style:normal;color:white;background-color:black">
+            <label><em><strong>ADMIN panel:</strong></em></label>
+            <br />
+            <a href="~/Autentifikacija/AddSalesman" style="color:aqua"> Add New Salesman </a>
+
+            <a href="~/Autentifikacija/GetUsers" style="color:red"> Open The List of All <b>Users</b> </a>
+            <a href="~/Manifestacija/GetManifestation" style="color:deeppink;font-family:Consolas">List of All Tickets</a>
+            <a href="~/Manifestacija/Requests" style="color:chartreuse;font-family:Consolas">Requests</a>
+            <a href="~/Manifestacija/GetAllManifestation" style="color:gold;font-family:Consolas">All Manifestations</a>
+
+
+        </div>
+    }
+}
+
+
+<div style="background-color:dimgray;color:black">
+    @* Za menifestaciju
+        ○ Naziv manifestacije
+        ○ Mesto održavanja
+        ○ Datumu (može se zadati opseg od-do)
+        ○ Lokaciji (korisnik zadaje naziv grada ili države)
+        ○ Ceni (opseg od-do). *@
+    <ul class="nav navbar-nav">
+        <li>
+            Search:
+            <input type="text" id="myName" onkeyup="searchName()" placeholder="Search by name..." title="Type in a name">
+            <input type="text" id="myLocation" onkeyup="searchLocation()" placeholder="Search by location..." title="Type in a name">
+        </li>
+        <li>
+            <form method="post" action="~/Home/Filter">
+                <label for="from1"> From price:</label>
+                <input type="number" min="0" name="from1" />
+                <label for="to1">To price:</label><input type="number" min="0" name="to1" />
+                <input type="hidden" name="from1" value="from1" /><input type="hidden" name="to1" value="to1" />
+
+                <label for="from"> From date:</label> <input type="date" name="from" />
+                <label for="to">To date:</label> <input type="date" name="to" />
+                <input type="hidden" name="from" value="from" /><input type="hidden" name="to" value="to" />
+
+                <label for="tipManifestacije"></label>
+                <input list="tipManifestacije" name="tipManifestacije" />
+                <datalist id="tipManifestacije">
+                    <option value="KONCERT"></option>
+                    <option value="FESTIVAL"></option>
+                    <option value="POZORISTE"></option>
+                </datalist>
+                <input type="hidden" name="tipManifestacije" value="tipManifestacije" />
+
+                <input type="submit" value="Filter" />
+            </form>
+    </ul>
+
+
+
+
+    <label for="myCheck">See only unsold manifestations</label>
+    <input type="checkbox" size="50" onclick="myFunction1()" id="myCheck" name="myCheck" />
+
+
+    <ul>
+        <li>
+            <form action="~/Home/SortDateDesc" method="get">
+                <label for="^">Desc sort</label>
+                <input type="submit" value="^" size="20" />
+            </form>
+        </li>
+        <li>
+            <form action="~/Home/SortDateAsc" method="get">
+                <label for=">">Asc sort</label>
+                <input type="submit" value=">" size="20" />
+            </form>
+        </li>
+    </ul>
+</div>
+
+<br />
+@* Sort
+    ○ Naziv manifestacije
+    ○ Datum i vreme održavanja
+    ○ Ceni karte
+    ○ Mesto održavanja, *@
+<br />
+<p>Manifestations:</p>
+<table border="1" id="myTable" style="font-family:Lucida Console;font-size:medium;text-align:center; border-color:lightblue" align="center" cellspacing="150">
+    <tr style="background-color:whitesmoke">
+        <th onclick="sortTable(0)">Name</th>
+        <th>Type of Manifestation</th>
+        <th onclick="sortByDate(2)">Date set for the manifestation</th>
+        <th>Number Of Seats</th>
+        <th onclick="sortTableNum(4)">Price</th>
+        <th>Status</th>
+        <th onclick="sortTable(6)">Location</th>
+        <th>Organisator</th>
+        <th>Image</th>
+        <th align="center"><img src="~/1200px-Golden_star.svg.png" name="ocena" height="20" width="20" /></th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+
+
+    </tr>
+
+    @foreach (Projekat.Models.Manifestacija v in ViewBag.SveManifestacije)
+    {
+
+        if (v.Odobreno)
+        {
+
+            <tr>
+                <td>@v.Naziv</td>
+                <td>@v.TipManifestacije</td>
+                <td>@v.Date.Date</td>
+                <td>@v.Br_mesta</td>
+                <td>@v.Cena_REGULAR</td>
+
+                @if (v.Status)
+                {
+                    <td style="color:lawngreen">ACTIVE</td>
+                }
+                else
+                {
+                    <td style="color:red">PASSIVE</td>
+                }
+            <td>
+                @v.MestoOdrzavanja.Grad
+                <br />
+                @v.MestoOdrzavanja.Ulica,
+                @v.MestoOdrzavanja.Broj
+                        </td>
+                <td>@v.Organizator.Username</td>
+                <td><img src="~/Files/@v.Image_path" style="width:50px; height:50px" /></td>
+                <td>@v.ProsecnaOcena</td>
+
+
+                <td>
+                    <form action="~/Manifestacija/GetManifestationDetail" method="get">
+                        <input type="hidden" name="Naziv" value="@v.Naziv" />
+                        <input type="submit" value="Detail" />
+                    </form>
+                </td>
+
+                @if (ViewBag.korisnici != null)
+                {
+
+
+                    if (ViewBag.korisnici.Uloga.Equals(Projekat.Models.eUloga.PRODAVAC) && ViewBag.korisnici.Username.Equals(v.Organizator.Username))
+                    {
+                        <td>
+                            <form action="~/Manifestacija/EditManifestation" method="get">
+                                <input type="hidden" name="Naziv" value="@v.Naziv" />
+                                <input type="submit" value="Edit" />
+                            </form>
+                        </td>
+                    }
+
+                }
+
+
+
+
+            </tr>
+        }
+
+
+    }
+
+</table>
+
+<script>
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+
+        table = document.getElementById("myTable");
+
+        switching = true;
+        //Set the sorting direction to ascending:
+        dir = "asc";
+
+        /*Make a loop that will continue until
+        no switching has been done:*/
+
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+
+            rows = table.rows;
+
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                /*check if the two rows should switch place,
+                based on the direction, asc or desc:*/
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                //Each time a switch is done, increase this count by 1:
+                switchcount++;
+            } else {
+                /*If no switching has been done AND the direction is "asc",
+                set the direction to "desc" and run the while loop again.*/
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+
+
+    function sortTableNum(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, switchcount = 0;
+        table = document.getElementById("myTable");
+        switching = true;
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        dir = "asc";
+
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                if (dir == "asc") {
+                    //check if the two rows should switch place:
+                    if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                       if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                //Each time a switch is done, increase this count by 1:
+                switchcount++;
+            } else {
+                /*If no switching has been done AND the direction is "asc",
+                set the direction to "desc" and run the while loop again.*/
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+
+        }
+    }
+
+
+
+    function sortByDate(n) {
+
+        var table, rows, switching, i, x, y, shouldSwitch, switchcount = 0;
+        table = document.getElementById("myTable");
+        switching = true;
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        dir = "asc";
+
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                var d1 = new Date(x);
+                var d2 = new Date(y);
+
+                let [month, date, year] = (d1).toLocaleDateString().split("/")
+                let [hour, minute, second] = (d2).toLocaleTimeString().slice(0, 7).split(":")
+
+                if (dir == "asc") {
+                    //check if the two rows should switch place:
+                    if (year > year) {
+                        //if so, mark as a switch and break the loop:
+
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (year < year) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                //Each time a switch is done, increase this count by 1:
+                switchcount++;
+            } else {
+                /*If no switching has been done AND the direction is "asc",
+                set the direction to "desc" and run the while loop again.*/
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+
+        }
+    }
+    function searchLocation() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myLocation");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[6];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function searchName() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myName");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    function myFunction1() {
+
+        var input, filter, table, tr, td, i, txtValue;
+        //input = document.getElementById("m");
+        //filter = input.value.toUpperCase();
+        var checkBox = document.getElementById("myCheck");
+        var text = document.getElementById("text");
+
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        if (checkBox.checked == true) {
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[3];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+
+                    if (Number(txtValue) > 0) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        } else
+        {
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[3];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+
+                    if (Number(txtValue)  >-1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+       
+       
+           
+        
+    }
+
+</script>
+
+

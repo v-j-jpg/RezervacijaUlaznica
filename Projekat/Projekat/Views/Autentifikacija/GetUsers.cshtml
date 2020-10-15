@@ -1,0 +1,269 @@
+﻿
+
+<ul class="nav navbar-nav">
+    <li>
+        Search:
+        <input type="text" id="myName" onkeyup="searchName()" placeholder="Search by name..." title="Type in a name">
+        <input type="text" id="myLastName" onkeyup="searchLastName()" placeholder="Search by lastname..." title="Type in a lastname">
+        <input type="text" id="myUsername" onkeyup="searchUsername()" placeholder="Search by username..." title="Type in a username">
+
+    </li>
+    <li>
+        <form method="get" action="~/Autentifikacija/Filter">
+
+            <label for="tipKorisnika"></label>
+
+          <input list="tipKorisnika" name="tipKorisnika" />
+            <datalist id="tipKorisnika" required>
+                <option value="BRONZANI"></option>
+                <option value="ZLATNI"></option>
+                <option value="SREBRNI"></option>
+            </datalist>
+            <input type="hidden" name="tipKorisnika" value="tipKorisnika" />
+
+
+          <input list="uloga" name="uloga" />
+            <datalist id="uloga" required>
+                <option value="ADMIN"></option>
+                <option value="PRODAVAC"></option>
+                <option value="KUPAC"></option>
+            </datalist>
+
+            <input type="hidden" name="uloga" value="uloga" />
+
+            <input type="submit" value="Filter" />
+        </form>
+    </li>
+    </ul>
+    <p>Users that are registerd:</p>
+
+    <table id="myTable" border="1">
+        <tr bgcolor="yellow">
+            <th onclick="sortTable(0)">Username</th>
+            <th>Password</th>
+            <th onclick="sortTable(2)">Name</th>
+            <th onclick="sortTable(3)">Lastname</th>
+            <th>Gender</th>
+            <th>Date</th>
+            <th>Role</th>
+            <th onliclick="sortTableNum(7)">Points</th>
+            <th>&nbsp;</th>
+
+        </tr>
+
+        @foreach (var k in ViewBag.Korisnici)
+        {
+<tr>
+    <td>@k.Username</td>
+    <td>@k.Password</td>
+    <td>@k.Name</td>
+    <td>@k.LastName</td>
+    <td>@k.Gender</td>
+    <td>@k.DateOfBirth</td>
+    <td>@k.Uloga</td>
+    <td>@k.Br_Bodova</td>
+    <td>
+        @if (!k.Uloga.Equals(Projekat.Models.eUloga.ADMIN))
+        {
+<form method="get" action="~/Autentifikacija/Delete">
+    <input type="hidden" name="Username" value="@k.Username">
+    <input type="submit" value="Delete">
+</form>}
+
+    </td>
+
+</tr>}
+
+
+
+
+    </table>
+
+    <form method="get" action="~/Home/Index">
+        <input type="submit" value="Back">
+    </form>
+    <script>
+    function searchUsername() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myUsername");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        function searchName() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myName");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[2];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        function searchLastName() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myLastName");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[3];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+
+            table = document.getElementById("myTable");
+
+            switching = true;
+            //Set the sorting direction to ascending:
+            dir = "asc";
+
+            /*Make a loop that will continue until
+            no switching has been done:*/
+
+            while (switching) {
+                //start by saying: no switching is done:
+                switching = false;
+
+                rows = table.rows;
+
+                /*Loop through all table rows (except the
+                first, which contains table headers):*/
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    //start by saying there should be no switching:
+                    shouldSwitch = false;
+
+                    /*Get the two elements you want to compare,
+                    one from current row and one from the next:*/
+
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                    /*check if the two rows should switch place,
+                    based on the direction, asc or desc:*/
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            //if so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            //if so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    /*If a switch has been marked, make the switch
+                    and mark that a switch has been done:*/
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    //Each time a switch is done, increase this count by 1:
+                    switchcount++;
+                } else {
+                    /*If no switching has been done AND the direction is "asc",
+                    set the direction to "desc" and run the while loop again.*/
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+
+
+        function sortTableNum(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, switchcount = 0;
+            table = document.getElementById("myTable");
+            switching = true;
+            /*Make a loop that will continue until
+            no switching has been done:*/
+            dir = "asc";
+
+            while (switching) {
+                //start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /*Loop through all table rows (except the
+                first, which contains table headers):*/
+                for (i = 1; i < (rows.length - 1); i++) {
+                    //start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /*Get the two elements you want to compare,
+                    one from current row and one from the next:*/
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                    if (dir == "asc") {
+                        //check if the two rows should switch place:
+                        if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                            //if so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                            //if so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    /*If a switch has been marked, make the switch
+                    and mark that a switch has been done:*/
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    //Each time a switch is done, increase this count by 1:
+                    switchcount++;
+                } else {
+                    /*If no switching has been done AND the direction is "asc",
+                    set the direction to "desc" and run the while loop again.*/
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+
+            }
+        }
+
+
+    </script>

@@ -1,0 +1,48 @@
+﻿<p>Users profile:</p>
+
+<table border="1" align="center" style="color:black; font-family:Consolas; font-size:large" >
+    
+    <tr><td>Username</td>  <td>@ViewBag.Korisnik.Username</td></tr>
+    <tr><td>Password</td>  <td>@ViewBag.Korisnik.Password</td></tr>
+
+    <tr>
+        <td>Name</td>
+        <td>@ViewBag.Korisnik.Name</td>
+    </tr>
+    <tr>
+        <td>Lastname</td>
+        <td>@ViewBag.Korisnik.LastName</td>
+    </tr>
+    <tr>
+        <td>Gender</td>
+        <td>@ViewBag.Korisnik.Gender</td>
+    </tr>
+    <tr><td>Date Of Birth</td>  <td>@ViewBag.Korisnik.DateOfBirth</td></tr>
+    <tr><td>Role</td>   <td>@ViewBag.Korisnik.Uloga</td></tr>
+    <tr>
+        <td>
+            Points
+        </td>
+        <td>@ViewBag.Korisnik.Br_Bodova</td>>
+    </tr>
+    <tr><td>Type of user</td> <td>@ViewBag.Korisnik.TipKorisnika.ImeTipaKorisnika</td></tr>
+      
+
+    <tr>
+        <td>&nsub;</td>
+        <td align="center">
+            <form action="~/Autentifikacija/EditUser" method="get">
+                <input type="hidden" name="username" value="@ViewBag.Korisnik.Username" />
+                <input type="submit" value="Edit" />
+            </form>
+        </td>
+    
+    </tr>
+         
+    
+
+</table>
+
+<form method="get" action="~/Home/Index">
+    <input type="submit" value="Back">
+</form>

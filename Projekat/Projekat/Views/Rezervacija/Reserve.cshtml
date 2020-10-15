@@ -1,0 +1,47 @@
+﻿<h2>Checkout:</h2>
+
+<div style="color:red">
+    @ViewBag.Message
+</div>
+
+
+
+<form method="post" action="~/Rezervacija/Confirmation">
+    <table>
+        <tr>
+            <td>
+                <input type="text" name="Br_karata" value="@ViewBag.Karta.Br_karata" readonly />x
+                <input type="text" name="Cena" value="@ViewBag.CenaJedneKarte" readonly />
+            </td>
+        </tr>
+
+        <tr>
+            <td>%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            </br>           DISCOUNT:
+                <input type="text" name="Korisnik.TipKorisnika.Popust" value="@ViewBag.Popust" readonly />
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h1>Total:</h1>
+                <input type="text" name="Naplacena_cena" style="color:red" value="@ViewBag.Karta.Naplacena_cena" readonly />
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Reserve" />
+            </td>
+        </tr>
+    </table>
+</form>
+
+</br>
+<div>If you don't want to buy this..</div>
+<form method="get" action="~/Rezervacija/DeleteTicket">
+    <input type="hidden" name="ID" value="@ViewBag.Karta.ID" />
+    <input type="hidden" name="tipKarte" value="@ViewBag.Karta.TipaKarte" />
+    <input type="hidden" name="Br_karata" value="@ViewBag.Karta.Br_karata" />
+    <input type="submit" value="Back">
+</form>

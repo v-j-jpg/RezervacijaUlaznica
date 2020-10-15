@@ -1,0 +1,323 @@
+﻿@{
+    ViewBag.Title = "Tickets";
+}
+<ul class="nav navbar-nav">
+    <li>
+        Search:
+        <input type="text" id="myName" onkeyup="searchName()" placeholder="Search by name..." title="Type in a name">
+    </li>
+    <li>
+        <form method="get" action="~/Rezervacija/Filter">
+            <label for="from1"> From price:</label>
+            <input type="number" required min="0" name="from1" />
+            <label for="to1">To price:</label>
+            <input type="number" min="0" required name="to1" />
+            <input type="hidden" name="from1" value="from1" /><input type="hidden" name="to1" value="to1" />
+
+
+
+            <label for="from"> From date:</label> <input required type="date" name="from" />
+            <label for="to">To date:</label> <input required type="date" name="to" />
+            <input type="hidden" name="from" value="from" /><input type="hidden" name="to" value="to" />
+
+
+            <label for="tipManifestacije"></label>
+
+            <input list="tipKarte" name="tipKarte" />
+            <datalist id="tipManifestacije" required>
+                <option value="VIP"></option>
+                <option value="FAN_PIT"></option>
+                <option value="REGULAR"></option>
+            </datalist>
+            <input type="hidden" name="tipKarte" value="tipKarte" />
+
+            <input type="submit" value="Filter" />
+        </form>
+    </li>
+    <li>
+        <label for="myCheck">See only active manifestions...</label>
+        <input type="checkbox" size="50" onclick="myFunction1()" id="myCheck" name="myCheck" />
+    </li>
+</ul>
+<ul>
+    <li><form action="~/Rezervacija/SortDateDesc" method="get">
+        <label for="^">Desc sort</label>
+    <input type="submit" value="^" size="20" />
+</form></li>
+<li>
+    <form action="~/Rezervacija/SortDateAsc" method="get">
+        <label for=">">Asc sort</label>
+        <input type="submit" value=">" size="20" />
+    </form></li>
+</ul>
+
+<div>
+   
+
+    <table id="myTable" border="1">
+        <tr style="align-content:center;resize:both;color:black;background-color:lavender;border-color:mediumpurple">
+
+            <th onclick="sortTable(0)">Name</th>
+            <th>Type of Manifestation</th>
+            <th>Date</th>
+            <th onclick="sortTableNum(3)">Paid Price</th>
+            <th>UserName</th>
+            <th onclick="sortTable(5)">Status</th>
+            <th>Type of Ticket</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+
+
+        </tr>
+
+        @foreach (Projekat.Models.Karta v in ViewBag.Korpa)
+        {
+
+            if (v.Status)
+            {
+                <tr>
+                    <td>@v.Manifestacija.Naziv</td>
+                    <td>@v.Manifestacija.TipManifestacije</td>
+                    <td>@v.Manifestacija.Date</td>
+                    <td>@v.Naplacena_cena</td>
+                    <td>@v.Kupac.Username</td>
+
+
+                    <td style="color:red">RESERVED</td>
+                    
+                   
+                    <td>
+                        @*@v.MestoOdrzavanja.Ulica
+                        @v.MestoOdrzavanja.Broj
+                        @v.MestoOdrzavanja.Grad
+                        @v.MestoOdrzavanja.Postanski_Broj*@
+
+                        @v.TipaKarte
+                    </td>
+                    
+                    <td>
+                        @*  <td><img src="~/Files/@v.Image_path" style="width:50px; height:50px" /></td>*@
+                        @if (v.Status.Equals(true) && v.Manifestacija.Date < DateTime.Now) //komentar na dogadjaj
+                        {
+                            <form method="get" action="~/Komentar/Komentar">
+                                <input type="hidden" name="username" value="@v.Kupac.Username" />
+
+                                <textarea id="textComment" name="textComment" rows="4" cols="50">Enter comment here... </textarea>
+                                <input type="hidden" name="textComment" value="textComment" />
+
+                                <input type="range" name="ocena" id="ocena" min="1" max="5" />
+                                <input type="hidden" name="ocena" value="ocena" />
+
+                                <input type="hidden" name="naziv" value="@v.Manifestacija.Naziv" />
+
+                                <input type="submit" value="Submit">
+
+                            </form>
+                        }
+                    </td>
+                   </tr>
+
+
+                }
+
+
+            }
+
+        </table>
+</div>
+
+
+
+
+<script>
+
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+
+        table = document.getElementById("myTable");
+
+        switching = true;
+        //Set the sorting direction to ascending:
+        dir = "asc";
+
+        /*Make a loop that will continue until
+        no switching has been done:*/
+
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+
+            rows = table.rows;
+
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                /*check if the two rows should switch place,
+                based on the direction, asc or desc:*/
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                //Each time a switch is done, increase this count by 1:
+                switchcount++;
+            } else {
+                /*If no switching has been done AND the direction is "asc",
+                set the direction to "desc" and run the while loop again.*/
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+
+    function sortTableNum(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, switchcount = 0;
+        table = document.getElementById("myTable");
+        switching = true;
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        dir = "asc";
+
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                if (dir == "asc") {
+                    //check if the two rows should switch place:
+                    if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                //Each time a switch is done, increase this count by 1:
+                switchcount++;
+            } else {
+                /*If no switching has been done AND the direction is "asc",
+                set the direction to "desc" and run the while loop again.*/
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+
+        }
+    }
+    function searchName() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myName");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+
+
+    function myFunction1() {
+
+        var input, filter, table, tr, td, i, txtValue;
+        //input = document.getElementById("m");
+        //filter = input.value.toUpperCase();
+        var checkBox = document.getElementById("myCheck");
+        var text = document.getElementById("text");
+
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        if (checkBox.checked == true) {
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[2];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+
+                    if (Date(txtValue) < Date.now) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        } else {
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[3];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+
+                    if (Number(txtValue) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+
+
+
+    }
+
+</script>

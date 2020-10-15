@@ -1,0 +1,10 @@
+joka|joka|Jovana Alana|Vujanić Obama|FEMALE|1998-03-19|ADMIN|0|ZLATNI
+AnaMaric22|anamaric88|Anastasija|Maric|FEMALE|1/1/0001|KUPAC|0|BRONZANI
+Cobi96|cobika|Branko|Svircev|MALE|1996-08-12|PRODAVAC|0|BRONZANI
+ikica|igi|Ivana|Zecevic|FEMALE|2020-09-09|PRODAVAC|0|BRONZANI
+milicabilicia|nemamstan|Milica|Ciganovic|MALE|2020-09-02|KUPAC|0|BRONZANI
+pera|pera|Petar|Strugar|MALE|2019-03-20|KUPAC|399|BRONZANI
+vujanic103|jole|Jo|jo|FEMALE|2020-09-22|KUPAC|0|BRONZANI
+monika|monika|Monika|Belluci|FEMALE|2020-09-01|KUPAC|0|BRONZANI
+lola|lola|Lolita|Julijana|FEMALE|2000-02-28|PRODAVAC|0|BRONZANI
+tata|tata|Taki|Maric|MALE|1997-02-21|KUPAC|1197|BRONZANI

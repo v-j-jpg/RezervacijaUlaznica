@@ -1,0 +1,57 @@
+﻿<p>Pending manifestations:</p>
+<table border="1" style="font-family:Console;font-size:medium; background-color:beige; border:double; border-bottom-color:orangered; text-align:center" align="center" cellspacing="150">
+    <tr>
+        <th>Name</th>
+        <th>Type of Manifestation</th>
+        <th>Date set for the manifestation</th>
+        <th>Number Of Seats</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>Location</th>
+        <th>Organisator</th>
+        <th>Image</th>
+        <th>&nbsp;</th>
+
+
+    </tr>
+    @foreach (Projekat.Models.Manifestacija v in ViewBag.SveManifestacije)
+    {
+        if (v.Odobreno.Equals(false))
+        {
+            <tr>
+                <td>@v.Naziv</td>
+                <td>@v.TipManifestacije</td>
+                <td>@v.Date</td>
+                <td>@v.Br_mesta</td>
+                <td>@v.Cena_REGULAR</td>
+                <td>@v.Status</td>
+                <td>
+                    @v.MestoOdrzavanja.Ulica
+                    @v.MestoOdrzavanja.Broj
+                    @v.MestoOdrzavanja.Grad
+                    @v.MestoOdrzavanja.Postanski_Broj
+
+                </td>
+                <td>@v.Organizator.Username</td>
+                <td><img src="~/Files/@v.Image_path" style="width:50px; height:50px" /></td>
+                <td>
+
+                    <form method="get" action="~/Manifestacija/PostManifestation">
+                        <input type="hidden" value="@v.Naziv" name="naziv" />
+                        <input style="color:darkred" type="submit" value="POST">
+                    </form>
+
+
+                </td>
+            </tr>
+        }
+
+    }
+
+</table>
+
+    <form method="get" action="~/Home/Index">
+        <input type="submit" value="Back">
+    </form>
+
+

@@ -1,0 +1,121 @@
+﻿
+    <div>
+        <p>Available manifestations:</p>
+        <table border="1">
+            <tr bgcolor="lightgrey">
+
+                <th>Name</th>
+                <th>Type of Manifestation</th>
+                <th>Date</th>
+                <th>Paid Price</th>
+                <th>UserName</th>
+                <th>Status</th>
+                <th>Type of Ticket</th>
+
+                @if (ViewBag.Korisnik.Uloga.Equals(Projekat.Models.eUloga.PRODAVAC))
+                {
+                    <td>Organisator</td>
+                }
+              
+             
+
+            </tr>
+
+            @foreach (Projekat.Models.Karta v in ViewBag.Rezervacije)
+            {
+
+
+
+                if (ViewBag.Korisnik.Uloga.Equals(Projekat.Models.eUloga.PRODAVAC)
+                    && v.Status.Equals(true) && ViewBag.Organizator.Equals(ViewBag.Korisnik.Username)
+                    && ViewBag.ManifestacijeOrganizatora.Naziv.Equals(v.Manifestacija.Naziv) 
+                     )
+                {
+
+                    <tr>
+                        <td>@v.Manifestacija.Naziv</td>
+                        <td>@v.Manifestacija.TipManifestacije</td>
+                        <td>@v.Manifestacija.Date</td>
+                        <td>@v.Naplacena_cena</td>
+                        <td>@v.Kupac.Username</td>
+
+                        @if (@v.Status)
+                        {
+                            <td style="color:red">RESERVED</td>
+                        }
+
+                        <td>
+                            @*@v.MestoOdrzavanja.Ulica
+                        @v.MestoOdrzavanja.Broj
+                        @v.MestoOdrzavanja.Grad
+                        @v.MestoOdrzavanja.Postanski_Broj*@
+
+                            @v.TipaKarte
+                        </td>
+                        <td>@ViewBag.Organizator</td>
+
+                        @*  <td><img src="~/Files/@v.Image_path" style="width:50px; height:50px" /></td>*@
+
+                    </tr>
+                }
+                else if (ViewBag.Korisnik.Uloga.Equals(Projekat.Models.eUloga.ADMIN))
+                {
+
+
+                    <tr>
+                        <td>@v.Manifestacija.Naziv</td>
+                        <td>@v.Manifestacija.TipManifestacije</td>
+                        <td>@v.Manifestacija.Date</td>
+                        <td>@v.Naplacena_cena</td>
+                        <td>@v.Kupac.Username</td>
+
+
+                        @if (v.Status)
+                        {
+                            <td style="color:red">RESERVED</td>
+                        }
+                        else
+                        {
+                            <td style="color:green">FREE</td>
+                        }
+
+                        <td>
+                            @*@v.MestoOdrzavanja.Ulica
+                        @v.MestoOdrzavanja.Broj
+                        @v.MestoOdrzavanja.Grad
+                        @v.MestoOdrzavanja.Postanski_Broj*@
+
+                            @v.TipaKarte
+                        </td>
+
+                       
+                        @*  <td><img src="~/Files/@v.Image_path" style="width:50px; height:50px" /></td>*@
+
+                    </tr>
+
+
+
+
+                }
+
+
+
+
+
+            }
+            @if (ViewBag.Korisnik.Uloga.Equals(Projekat.Models.eUloga.ADMIN))
+            {
+                <form method="get" action="~/Rezervacija/LoggerHistory">
+                    <input style="color:darkred" type="submit" value="LoggerHistorty">
+                </form>
+            }
+
+
+        </table>
+    </div>
+
+        <form method="get" action="~/Home/Index">
+            <input type="submit" value="Back">
+        </form>
+
+

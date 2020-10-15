@@ -1,0 +1,67 @@
+﻿
+@{ ViewBag.Title = "Registracija"; }
+
+<h2>Register</h2>
+
+<div style="color:red">
+    @ViewBag.Message
+</div>
+
+<form action="Registracija" method="post">
+    <table>
+        <tr>
+            <td>Username:</td>
+            <td><input type="text" name="username" required /></td>
+        </tr>
+
+        <tr>
+            <td>Password:</td>
+            <td><input type="password" name="password" required /></td>
+        </tr>
+
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" name="name" /></td>
+        </tr>
+        <tr>
+            <td>Lastname:</td>
+            <td><input type="text" name="lastname" /></td>
+        </tr>
+
+        <tr>
+            <td>Gender:</td>
+            <td>
+                <input list="gender" name="gender" />
+                <datalist id="gender">
+                    <option value="MALE"></option>
+                    <option value="FEMALE"></option>
+                </datalist>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="date">Birthday:</label>
+
+            </td>
+            <td>
+                <input type="date" name="dateOfBirth" id="dateOfBirth"
+                       placeholder="dd-mm-yyyy"
+                       min="1997-01-01" max="2030-12-31">
+            </td>
+        </tr>
+
+
+
+
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Registracija" />
+            </td>
+        </tr>
+    </table>
+</form>
+
+<form method="get" action="~/Home/Index">
+    <input type="submit" value="Back">
+</form>

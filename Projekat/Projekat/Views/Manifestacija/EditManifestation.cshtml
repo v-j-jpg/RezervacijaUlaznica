@@ -1,0 +1,97 @@
+﻿
+@{ ViewBag.Title = "Edit Manifestation"; }
+
+<h2>Add Manifestation</h2>
+
+<div style="color:red">
+    @ViewBag.Message
+</div>
+
+<form method="post" action="~/Manifestacija/EditManifestation" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" name="naziv" readonly value="@ViewBag.Manifestacije.Naziv" /></td>
+        </tr>
+
+        <tr>
+            <td>Type of Manifestation:</td>
+            <td>
+                <input list="tipManifestacije"  name="tipManifestacije" value="@ViewBag.Manifestacije.TipManifestacije" />
+                <datalist id="tipManifestacije">
+                    <option value="KONCERT"></option>
+                    <option value="FESTIVAL"></option>
+                    <option value="POZORISTE"></option>
+
+                </datalist>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Number of seats:</td>
+            <td><input type="text" name="br_mesta" value="@ViewBag.Manifestacije.Br_mesta" /></td>
+        </tr>
+        <tr>
+            <td>Date:</td>
+            <td>
+                <input type="datetime-local" name="date" id="date"
+                       placeholder="dd-mm-yyyy"
+                       min="1997-01-01" max="2030-12-31" required value="@ViewBag.Manifestacije.Date">
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Price REGULAR:
+
+            </td>
+            <td>
+                <input type="text" min="1" id="cena_REGULAR" name="cena_REGULAR" value="@ViewBag.Manifestacije.Cena_REGULAR">
+            </td>
+        </tr>
+
+        <tr>
+            <td>Street:</td>
+            <td>
+                <input type="text" id="ulica" name="mestoOdrzavanja.Ulica" value="@ViewBag.Manifestacije.MestoOdrzavanja.Ulica">
+            </td>
+
+            <td>Street Number:</td>
+            <td>
+                <input type="text" id="broj" name="mestoOdrzavanja.Broj" value="@ViewBag.Manifestacije.MestoOdrzavanja.Broj">
+            </td>
+
+            <td>City:</td>
+
+            <td><input type="text" name="mestoOdrzavanja.Grad" value="@ViewBag.Manifestacije.MestoOdrzavanja.Grad" /></td>
+
+            <td>PostNum:</td>
+
+            <td><input type="text" name="mestoOdrzavanja.Postanski_Broj" value="@ViewBag.Manifestacije.MestoOdrzavanja.Postanski_Broj" /></td>
+
+        </tr>
+        <tr>
+            <td>Organisator:</td>
+            <td><input type="text" name="organizator.Username" value="@ViewBag.Manifestacije.Organizator.Username"  readonly /></td>
+        </tr>
+        <tr>
+            <td>Photo: </td>
+            <td>
+
+                <input type="file" name="file" required />
+                @ViewBag.Message
+
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="EditManifestation" />
+            </td>
+        </tr>
+    </table>
+</form>
+
+<form method="get" action="~/Home/Index">
+    <input type="submit" value="Back">
+</form>

@@ -1,0 +1,48 @@
+﻿<table border="1" style="font-family:Console;font-size:medium; background-color:beige; border:double; border-bottom-color:orangered; text-align:center" align="center" cellspacing="150">
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Name of the manifestation</th>
+        <th>Comment</th>
+        <th>Rating</th>
+        <th>&nbsp;</th>
+
+
+    </tr>
+    @foreach (Projekat.Models.Komentar v in ViewBag.Komentari)
+    {
+        if (v.Status.Equals(Projekat.Models.eStanjeKomentara.PENDING) 
+            //&& ViewBag.Organizator.Equals(ViewBag.Korisnik.Username)
+            )
+        {
+            <tr>
+                <td>@v.ID</td>
+                <td>@v.Korisnik.Username</td>
+                <td>@v.Manifestacija.Naziv</td>
+                <td>@v.TextComment</td>
+                <td>@v.Ocena</td>
+
+                <td>
+
+                    <form method="get" action="~/Komentar/PostComment">
+                        <input type="hidden" value="@v.ID" name="ID" />
+                        <input style="color:lawngreen" type="submit" value="ACCEPT">
+
+                    </form>
+                    <form method="get" action="~/Komentar/DeniedComment">
+                        <input type="hidden" value="@v.ID" name="ID" />
+                        <input style="color:darkred" type="submit" value="DENIED">
+
+                    </form>
+
+
+
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<form method="get" action="~/Home/Index">
+    <input type="submit" value="Back">
+</form>

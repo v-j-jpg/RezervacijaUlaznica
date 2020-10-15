@@ -1,0 +1,27 @@
+﻿
+<h2>Login</h2>
+
+<div style="color:red">
+    @ViewBag.Message
+</div>
+
+
+<form action="~/Autentifikacija/Login" method="post">
+    <table>
+        <tr>
+            <td>Username:</td>
+            <td><input type="text" name="Username" required /></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input type="password" name="Password" required /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Login" />
+            </td>
+        </tr>
+    </table>
+</form>
+<div>If you don't have an account...</div>
+<a href="~/Autentifikacija/Registracija">REGISTER</a>

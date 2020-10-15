@@ -1,0 +1,100 @@
+﻿@{ ViewBag.Title = "Edit User"; }
+
+<p>Users profile:</p>
+
+<div style="color:red">
+    @ViewBag.Message
+</div>
+
+<form action="~/Autentifikacija/EditUser" method="post">
+    <table>
+        <tr>
+            <td> <h6>Username</h6></td>
+            <td>
+                <input type="text" name="username" readonly value="@ViewBag.Korisnik.Username" />
+            </td>
+        </tr>
+
+        <tr>
+
+            <td>
+                <h6>Password</h6>
+            </td>
+            <td>  <input type="text" name="password" value="@ViewBag.Korisnik.Password" />   </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h6>Name</h6>
+            </td>
+            <td>    <input type="text" name="name" value="@ViewBag.Korisnik.Name" />   </td>
+        </tr>
+        <tr>
+            <td>
+                <h6>Lastname</h6>
+            </td>
+            <td>  <input type="text" name="lastname" value="@ViewBag.Korisnik.LastName" />   </td>
+        </tr>
+
+        <tr>
+            <td><h6>Gender:</h6></td>
+            <td>
+                <input list="gender" name="gender" value="@ViewBag.Korisnik.Gender" />
+                <datalist id="gender">
+                    <option value="MALE"></option>
+                    <option value="FEMALE"></option>
+                </datalist>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="date">Date Of Birth:</label>
+
+            </td>
+            <td>
+                <input type="date" id="dateOfBirth"required value="@ViewBag.Korisnik.DateOfBirth" name="dateOfBirth">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="uloga">Role:</label>
+
+            </td>
+            <td>
+                <input type="text" id="uloga" value="@ViewBag.Korisnik.Uloga" name="uloga" readonly>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td>
+                <label for="br_bodova">Points:</label>
+
+            </td>
+            <td>
+                <input type="text" id="br_bodova" value="@ViewBag.Korisnik.Br_Bodova" name="br_bodova" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="tipKorisnika">Type of user:</label>
+
+            </td>
+            <td>
+                <input type="text" id="tipKorisnika" value="@ViewBag.Korisnik.TipKorisnika.ImeTipaKorisnika" name="tipKorisnika" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="EditUser" />
+            </td>
+        </tr>
+    </table>
+</form>
+
+<form method="get" action="~/Home/Index">
+    <input type="submit" value="Back">
+</form>
+
+
