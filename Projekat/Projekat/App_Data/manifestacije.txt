@@ -1,8 +1,8 @@
 Rada Manojlovic|KONCERT|279|9/18/2020 2:13:00 AM|500|False|Langar|3232|Indjija|21000|rada-manojlovic-1-1000x555.jpg|lola|True|0
-Uspavana lepotica|POZORISTE|0|9/30/2020 12:00:00 AM|570|True|Bulevar Oslobodjenja|3|Novi Sad|21000|Uspavana_lepotica_2018_223x324.jpg|lola|True|0
-Krcko Orascic|POZORISTE|87|9/25/2020 12:00:00 AM|250|True|Maksima Gorkog|2|Curug|21000|krcko_orascic_plakat.jpg|lola|True|0
+Uspavana lepotica|POZORISTE|0|9/30/2020 12:00:00 AM|570|False|Bulevar Oslobodjenja|3|Novi Sad|21000|Uspavana_lepotica_2018_223x324.jpg|lola|True|0
+Krcko Orascic|POZORISTE|87|9/25/2020 12:00:00 AM|250|False|Maksima Gorkog|2|Curug|21000|krcko_orascic_plakat.jpg|lola|True|0
 Exit|FESTIVAL|55000|9/23/2020 10:52:00 PM|6000|False|Novosadska|83|Temerin|0|Exit_logo.png|ikica|True|0
 SeaDance|FESTIVAL|25000|9/19/2020 7:00:00 PM|2500|False|Novosadska|83|Temerin|0|images.jpg|ikica|True|0
-Zorica Brunclik|KONCERT|2489|9/16/2020 9:34:00 PM|1250|False|Jorz Marijanova|32|Curug|21000|unnamed.png|lola|True|2.67
+Zorica Brunclik|KONCERT|2489|9/16/2020 9:34:00 PM|1250|False|Jorz Marijanova|32|Curug|21000|unnamed.png|lola|True|3
 Zdravko Colic|FESTIVAL|2421|8/5/2020 3:20:00 AM|6000|False|Aleksejeva|8|Zrenjenin|21000|ecbc15bc52a2453eb53b4aa7d53dc421.600x600x1.jpg|lola|True|2.67
-Labudovo jezero|POZORISTE|93|6/10/2020 4:08:00 AM|170|False|Bulevar Oslobodjenja|2|Novi Sad|21000|labudovo-jezero-2.jpg|Cobi96|True|0
+Labudovo jezero|POZORISTE|93|6/10/2020 4:08:00 AM|170|False|Bulevar Oslobodjenja|2|Novi Sad|21000|labudovo-jezero-2.jpg|Cobi96|True|3.5

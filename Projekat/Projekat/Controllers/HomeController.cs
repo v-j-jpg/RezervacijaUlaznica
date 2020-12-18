@@ -25,19 +25,19 @@ namespace Projekat.Controllers
             int brojac = 0;
             bool promena=false;
 
-           foreach (var item in manifestacija )
+           foreach (Manifestacija item in manifestacija.Values.ToList())
                 {
 
                 //izracunaj prosek ocena
-                manifestacija[item.Value.Naziv].ProsecnaOcena = new CommonMethods().ProsecnaOcena(komentar, item.Value.Naziv);
+                manifestacija[item.Naziv].ProsecnaOcena = new CommonMethods().ProsecnaOcena(komentar, item.Naziv);
 
                 
               
-                if (item.Value.Date < DateTime.Now && item.Value.Status.Equals(true))//Da li je manifestacija prosla
+                if (item.Date < DateTime.Now && item.Status.Equals(true))//Da li je manifestacija prosla
                 {
                   
-                    item.Value.Status = false;
-                    manifestacija[item.Value.Naziv] = item.Value;
+                    item.Status = false;
+                    manifestacija[item.Naziv] = item;
                     promena = true;
                 }
                 brojac++;
